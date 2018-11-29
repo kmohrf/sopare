@@ -1,0 +1,4 @@
+matplotlib
+pyaudio
+scypi
+numpy
