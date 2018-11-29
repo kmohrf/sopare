@@ -1,34 +1,176 @@
-<html><body><h1>SoPaRe plot</h1>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1.0">
+        <title>SOPARE Plot</title>
+        <style type="text/css">
+            body {
+                line-height: 1.3;
+                font-family:
+                        -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+                        'Open Sans', 'Europa', Helvetica, Arial, sans-serif,
+                        'Apple Color Emoji', 'Segoe UI Emoji', Segoe UI Symbol;
+                width: 80rem;
+                max-width: calc(100vw - 5rem);
+                margin: 2rem auto;
+            }
 
-<p>
-<h2>Full sample:</h2><BR>
-<img src="sample.png">
-</p>
+            h2 {
+                margin: 2rem 0 .5rem;
+            }
 
-<p>
-<h2>Full FFT:</h2><BR>
-<img src="fft.png">
-</p>
+            section {
+                margin-bottom: 5rem;
+            }
 
-<p>
-<h2>Fast Fourier Transform for tokens[0:5]:</h2><BR>
-<img src="fft0.png">
-<img src="norm0.png">
-<hr>
-<img src="fft1.png">
-<img src="norm1.png">
-<hr>
-<img src="fft2.png">
-<img src="norm2.png">
-<hr>
-<img src="fft3.png">
-<img src="norm3.png">
-<hr>
-<img src="fft4.png">
-<img src="norm4.png">
-<hr>
-<img src="fft5.png">
-<img src="norm5.png">
-</p>
+            section > :not(h2):not(:last-child) {
+                margin-bottom: 2.5rem;
+                padding-bottom: 2.5rem;
+                border-bottom: 1px solid #eaeaea;
+            }
 
-</body></html>
+            .figure {
+                margin: 0;
+                position: relative;
+            }
+
+            .figure img {
+                width: 100%;
+            }
+
+            .figure figcaption {
+                text-align: center;
+                display: block;
+                margin: .5rem 0;
+                position: relative;
+                z-index: 1;
+            }
+
+            .side-by-side {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .side-by-side > * {
+                flex: 1;
+                min-width: 240px;
+                width: 50%;
+            }
+
+            .counter {
+                counter-reset: _counter;
+            }
+
+            .counter [data-count] {
+                counter-increment: _counter;
+                overflow: visible;
+                position: relative;
+            }
+
+            .counter [data-count]:after {
+                content: counter(_counter);
+                position: absolute;
+                right: -2.5rem;
+                top: 0;
+                font-size: 24rem;
+                line-height: 1;
+                color: #bbb;
+                opacity: .25;
+                pointer-events: none;
+                text-rendering: geometricPrecision;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>SOPARE Plot</h1>
+
+            <section>
+                <h2>Full Analysis</h2>
+
+                <div class="side-by-side" role="group">
+                    <figure class="figure">
+                        <img src="./sample.png" alt="">
+                        <figcaption>Sample</figcaption>
+                    </figure>
+
+                    <figure class="figure">
+                        <img src="./fft.png" alt="">
+                        <figcaption>FFT</figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="counter">
+                <h2>Token Fast Fourier Transformations</h2>
+
+                <div class="side-by-side" data-count role="group" aria-label="Token 1">
+                    <figure class="figure">
+                        <img src="./fft0.png" alt="">
+                        <figcaption>FFT</figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src="./norm0.png" alt="">
+                        <figcaption>Norm</figcaption>
+                    </figure>
+                </div>
+
+                <div class="side-by-side" data-count role="group" aria-label="Token 2">
+                    <figure class="figure">
+                        <img src="./fft1.png" alt="">
+                        <figcaption>FFT</figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src="./norm1.png" alt="">
+                        <figcaption>Norm</figcaption>
+                    </figure>
+                </div>
+
+                <div class="side-by-side" data-count role="group" aria-label="Token 3">
+                    <figure class="figure">
+                        <img src="./fft2.png" alt="">
+                        <figcaption>FFT</figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src="./norm2.png" alt="">
+                        <figcaption>Norm</figcaption>
+                    </figure>
+                </div>
+
+                <div class="side-by-side" data-count role="group" aria-label="Token 4">
+                    <figure class="figure">
+                        <img src="./fft3.png" alt="">
+                        <figcaption>FFT</figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src="./norm3.png" alt="">
+                        <figcaption>Norm</figcaption>
+                    </figure>
+                </div>
+
+                <div class="side-by-side" data-count role="group" aria-label="Token 5">
+                    <figure class="figure">
+                        <img src="./fft4.png" alt="">
+                        <figcaption>FFT</figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src="./norm4.png" alt="">
+                        <figcaption>Norm</figcaption>
+                    </figure>
+                </div>
+
+                <div class="side-by-side" data-count role="group" aria-label="Token 6">
+                    <figure class="figure">
+                        <img src="./fft5.png" alt="">
+                        <figcaption>FFT</figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src="./norm5.png" alt="">
+                        <figcaption>Norm</figcaption>
+                    </figure>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
