@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Copyright (C) 2015 - 2018 Martin Kauss (yo@bishoph.org)
 
@@ -18,17 +16,17 @@ under the License.
 
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as pyplot
-from sopare.path import __plotdestination__
 
-class visual:
 
+class Visual:
     def __init__(self):
-        self.plot_cache = [ ]
+        self.plot_cache = []
 
     def create_sample(self, data, filename):
+        import matplotlib.pyplot as pyplot
+        from sopare.path import __plotdestination__
         pyplot.plot(data)
-        pyplot.savefig(__plotdestination__+filename)
+        pyplot.savefig(__plotdestination__ + filename)
         pyplot.clf()
 
     def extend_plot_cache(self, data):

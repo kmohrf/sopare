@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 """
 Copyright (C) 2015 - 2018 Martin Kauss (yo@bishoph.org)
@@ -23,8 +22,8 @@ import sopare.config as config
 import sopare.util as util
 import sopare.recorder as recorder
 import sopare.log as log
-import test.unit_tests as tests
 from sopare.version import __version__
+
 
 def main(argv):
     endless_loop = False
@@ -38,36 +37,36 @@ def main(argv):
     cfg_ini = None
 
     recreate = False
-    unit = False
 
-    print ("sopare "+__version__)
+    print(('sopare ' + __version__))
 
-    if (len(argv) > 0):
+    if len(argv) > 0:
         try:
             opts, args = getopt.getopt(argv, "ahelpv~cous:w:r:t:d:i:",
-             ["analysis", "help", "error", "loop", "plot", "verbose", "wave", "create", "overview", "unit",
-              "show=", "write=", "read=", "train=", "delete=", "ini="
-             ])
+                                       ["analysis", "help", "error", "loop", "plot", "verbose",
+                                        "wave", "create", "overview", "unit",
+                                        "show=", "write=", "read=", "train=", "delete=", "ini="
+                                        ])
         except getopt.GetoptError:
             usage()
             sys.exit(2)
-        for opt, arg in opts: 
-            if (opt in ("-h", "--help")):
+        for opt, arg in opts:
+            if opt in ("-h", "--help"):
                 usage()
                 sys.exit(0)
-            if (opt in ("-e", "--error")):
+            if opt in ("-e", "--error"):
                 error = True
-            if (opt in ("-l", "--loop")):
+            if opt in ("-l", "--loop"):
                 endless_loop = True
-            if (opt in ("-p", "--plot")):
-                if (endless_loop == False):
+            if opt in ("-p", "--plot"):
+                if endless_loop is False:
                     plot = True
                 else:
-                    print ("Plotting only works without loop option!")
+                    print("Plotting only works without loop option!")
                     sys.exit(0)
-            if (opt in ("-v", "--verbose")):
+            if opt in ("-v", "--verbose"):
                 debug = True
-            if (opt in ("-~", "--wave")):
+            if opt in ("-~", "--wave"):
                 wave = True
             if opt in ("-c", "--create"):
                 recreate = True
@@ -91,28 +90,22 @@ def main(argv):
                 sys.exit(0)
             if opt in ("-i", "--ini"):
                 cfg_ini = arg
-            if opt in ("-u", "--unit"):
-                unit = True
 
     cfg = create_config(cfg_ini, endless_loop, debug, plot, wave, outfile, infile, dict, error)
 
-    if (recreate == True):
+    if recreate is True:
         recreate_dict(debug, cfg)
         sys.exit(0)
 
-    if (unit == True):
-        unit_tests(debug, cfg)
-        sys.exit(0)
+    recorder.Recorder(cfg)
 
-
-    recorder.recorder(cfg)
 
 def create_config(cfg_ini, endless_loop, debug, plot, wave, outfile, infile, dict, error):
-    if (cfg_ini == None):
-        cfg = config.config()
+    if cfg_ini is None:
+        cfg = config.Config()
     else:
-        cfg = config.config(cfg_ini)
-    logger = log.log(debug, error, cfg)
+        cfg = config.Config(cfg_ini)
+    logger = log.Log(debug, error, cfg)
     cfg.addsection('cmdlopt')
     cfg.setoption('cmdlopt', 'endless_loop', str(endless_loop))
     cfg.setoption('cmdlopt', 'debug', str(debug))
@@ -124,64 +117,65 @@ def create_config(cfg_ini, endless_loop, debug, plot, wave, outfile, infile, dic
     cfg.addlogger(logger)
     return cfg
 
+
 def recreate_dict(debug, cfg):
-    print ("recreating dictionary from raw input files...")
-    utilities = util.util(debug, cfg.getfloatoption('characteristic', 'PEAK_FACTOR'))
+    print("recreating dictionary from raw input files...")
+    utilities = util.Util(debug, cfg.getfloatoption('characteristic', 'PEAK_FACTOR'))
     utilities.recreate_dict_from_raw_files()
 
+
 def delete_word(dict, debug):
-    if (dict != "*"):
-        print ("deleting "+dict+" from dictionary")
+    if dict != "*":
+        print(("deleting " + dict + " from dictionary"))
     else:
-        print ("deleting all enttries from dictionary")
-    utilities = util.util(debug, None)
-    utilities.deletefromdict(dict)
+        print("deleting all enttries from dictionary")
+    utilities = util.Util(debug, None)
+    utilities.delete_from_dict(dict)
+
 
 def show_word_entries(dict, debug):
-    print (dict+" entries in dictionary:")
-    print
-    utilities = util.util(debug, None)
-    utilities.showdictentry(dict)
+    print((dict + " entries in dictionary:"))
+    print()
+    utilities = util.Util(debug, None)
+    utilities.show_dict_entry(dict)
+
 
 def show_dict_ids(debug):
-    print ("current entries in dictionary:")
-    utilities = util.util(debug, None)
-    utilities.showdictentriesbyid()
+    print("current entries in dictionary:")
+    utilities = util.Util(debug, None)
+    utilities.show_dict_entries_by_id()
+
 
 def show_dict_analysis(debug):
-    print ("dictionary analysis:")
-    utilities = util.util(debug, None)
-    analysis = utilities.compile_analysis(utilities.getDICT())
-    for id in analysis:
-        print (id)
-        for k, v in analysis[id].iteritems():
-            print (' ' + str(k) + ' ' + str(v))
+    print("dictionary analysis:")
+    utilities = util.Util(debug, None)
+    analysis = utilities.compile_analysis(utilities.get_dict())
+    for _id in analysis:
+        print(_id)
+        for k, v in analysis[_id].items():
+            print((' ' + str(k) + ' ' + str(v)))
 
-def unit_tests(debug, cfg):
-    print ("starting unit tests...")
-    tests.unit_tests(debug, cfg)
-    print ("done.")
 
 def usage():
-    print ("usage:\n")
-    print (" -h --help           : this help\n")
-    print (" -l --loop           : loop forever\n")
-    print (" -e --error          : redirect sdterr to error.log\n")
-    print (" -p --plot           : plot results (only without loop option)\n")
-    print (" -v --verbose        : enable verbose mode\n")
-    print (" -~ --wave           : create *.wav files (token/tokenN.wav) for")
-    print ("                       each detected word\n")
-    print (" -c --create         : create dict from raw input files\n")
-    print (" -o --overview       : list all dict entries\n")
-    print (" -s --show   [word]  : show detailed [word] entry information")
-    print ("                       '*' shows all entries!\n")
-    print (" -w --write  [file]  : write raw to [dir/filename]\n")
-    print (" -r --read   [file]  : read raw from [dir/filename]\n")
-    print (" -t --train  [word]  : add raw data to raw dictionary file\n")
-    print (" -d --delete [word]  : delete [word] from dictionary and exits.")
-    print ("                       '*' deletes everything!\n")
-    print (" -i --ini    [file]  : use alternative configuration file\n")
-    print (" -a --analysis       : show dictionary analysis and exits.\n")
-    print (" -u --unit           : run unit tests\n")
+    print("usage:")
+    print(" -h --help           : this help")
+    print(" -l --loop           : loop forever")
+    print(" -e --error          : redirect sdterr to error.log")
+    print(" -p --plot           : plot results (only without loop option)")
+    print(" -v --verbose        : enable verbose mode")
+    print(" -~ --wave           : create *.wav files (token/tokenN.wav) for")
+    print("                       each detected word")
+    print(" -c --create         : create dict from raw input files")
+    print(" -o --overview       : list all dict entries")
+    print(" -s --show   [word]  : show detailed [word] entry information")
+    print("                       '*' shows all entries!")
+    print(" -w --write  [file]  : write raw to [dir/filename]")
+    print(" -r --read   [file]  : read raw from [dir/filename]")
+    print(" -t --train  [word]  : add raw data to raw dictionary file")
+    print(" -d --delete [word]  : delete [word] from dictionary and exits.")
+    print("                       '*' deletes everything!")
+    print(" -i --ini    [file]  : use alternative configuration file")
+    print(" -a --analysis       : show dictionary analysis and exits.")
+
 
 main(sys.argv[1:])

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Copyright (C) 2015 - 2018 Martin Kauss (yo@bishoph.org)
 
@@ -16,26 +14,26 @@ License for the specific language governing permissions and limitations
 under the License.
 """
 
-import ConfigParser
+import configparser
 
-class config():
 
-    def __init__(self, config_file = 'config/default.ini'):
-        self.config = ConfigParser.ConfigParser(allow_no_value=True)
+class Config:
+    def __init__(self, config_file='config/default.ini'):
+        self.config = configparser.ConfigParser(allow_no_value=True)
         self.config.read(config_file)
         self.logger = None
 
-    def getoption(self, section, option):
-        return self.config.get(section, option)
+    def getoption(self, section, option, **kwargs):
+        return self.config.get(section, option, **kwargs)
 
-    def getfloatoption(self, section, option):
-        return self.config.getfloat(section, option)
+    def getfloatoption(self, section, option, **kwargs):
+        return self.config.getfloat(section, option, **kwargs)
 
-    def getintoption(self, section, option):
-        return self.config.getint(section, option)
+    def getintoption(self, section, option, **kwargs):
+        return self.config.getint(section, option, **kwargs)
 
-    def getbool(self, section, option):
-        return self.config.getboolean(section, option)
+    def getbool(self, section, option, **kwargs):
+        return self.config.getboolean(section, option, **kwargs)
 
     def addsection(self, section):
         self.config.add_section(section)
@@ -53,8 +51,8 @@ class config():
         return self.logger
 
     def showconfig(self):
-        print ('current config:')
+        print('current config:')
         for section in self.config.sections():
-            print (str(section))
+            print((str(section)))
             for option in self.config.options(section):
-                print (' ' + str(option) + ' = ' + str(self.getoption(section, option)))
+                print((' ' + str(option) + ' = ' + str(self.getoption(section, option))))

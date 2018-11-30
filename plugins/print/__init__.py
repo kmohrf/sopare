@@ -16,7 +16,8 @@ License for the specific language governing permissions and limitations
 under the License.
 """
 
+
 # Default plugin for output of analysis
 
 def run(readable_results, data, rawbuf):
-    print readable_results
+    print(readable_results)

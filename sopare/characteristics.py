@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Copyright (C) 2015 - 2018 Martin Kauss (yo@bishoph.org)
 
@@ -18,18 +16,18 @@ under the License.
 
 import numpy
 
-class characteristic:
 
+class Characteristic:
     def __init__(self, peak_factor):
         self.peak_factor = peak_factor
 
-    def getcharacteristic(self, fft, chunked_norm, meta):
+    def get_characteristic(self, fft, chunked_norm, meta):
         fft = numpy.abs(fft)
         df = numpy.argmax(fft)
         dfm = int(numpy.amax(fft))
         fc = 0
-        peaks = [ ]
-        if (len(chunked_norm) > 0):
+        peaks = []
+        if len(chunked_norm) > 0:
             where_range = numpy.mean(chunked_norm) / self.peak_factor
             peaks = list(numpy.array(numpy.where(chunked_norm > where_range))[0])
             where_range = numpy.mean(chunked_norm)
@@ -37,14 +35,15 @@ class characteristic:
             fc = round(numpy.sum(numpy.sqrt(npeaks)), 1)
         token_peaks = self.get_token_peaks(meta)
         volume = self.get_volume(meta)
-        model_characteristic = {'df': df, 'dfm': dfm, 'fc': fc, 'peaks': peaks, 'token_peaks': token_peaks, 'volume': volume, 'norm': chunked_norm }
+        model_characteristic = {'df': df, 'dfm': dfm, 'fc': fc, 'peaks': peaks,
+                                'token_peaks': token_peaks, 'volume': volume, 'norm': chunked_norm}
         return model_characteristic
 
     @staticmethod
     def get_token_peaks(meta):
-        token_peaks = [ ]
+        token_peaks = []
         for m in meta:
-            if ('token_peaks' in m):
+            if 'token_peaks' in m:
                 return m['token_peaks']
         return token_peaks
 
@@ -52,6 +51,6 @@ class characteristic:
     def get_volume(meta):
         volume = 0
         for m in meta:
-            if ('volume' in m):
+            if 'volume' in m:
                 return m['volume']
         return volume

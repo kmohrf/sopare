@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Copyright (C) 2015 - 2018 Martin Kauss (yo@bishoph.org)
 
@@ -18,25 +16,25 @@ under the License.
 
 import logging
 
-class log():
 
-    def __init__(self, debug, error, cfg = None):
-        if (error == True):
+class Log:
+    def __init__(self, debug, error, cfg=None):
+        if error is True:
             logging.basicConfig(filename='error.log', filemode='a', loglevel='ERROR')
         else:
             logging.basicConfig()
         self.logger = logging.getLogger()
         self.logformat = '%(levelname)s: %(message)s'
         self.loglevel = 'ERROR'
-        if (error == False and cfg != None and cfg.hasoption('misc', 'LOGLEVEL')):
+        if error is False and cfg is not None and cfg.hasoption('misc', 'LOGLEVEL'):
             check = cfg.getoption('misc', 'LOGLEVEL')
-            if (check != ''):
+            if check != '':
                 self.loglevel = check
-        if (error == False and debug == True):
+        if error is False and debug is True:
             self.loglevel = 'DEBUG'
         self.logger.setLevel(self.loglevel)
         ch = logging.StreamHandler()
         ch.setFormatter(self.logformat)
 
-    def getlog(self):
+    def get_log(self):
         return self.logger
